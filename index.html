@@ -1,0 +1,1869 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MClient | Nursultan Delta Wexside</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: #ffffff;
+            color: #0a0a0a;
+            overflow-x: hidden;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 25px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            border-bottom: 1px solid #f0f0f0;
+            animation: slideDown 0.8s ease;
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 900;
+            letter-spacing: -2px;
+        }
+
+        .logo span {
+            color: #666;
+            font-weight: 400;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #0a0a0a;
+            font-weight: 500;
+            position: relative;
+            transition: color 0.3s;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #0a0a0a;
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 20px;
+        }
+
+        .hero h1 {
+            font-size: clamp(36px, 8vw, 80px);
+            font-weight: 900;
+            letter-spacing: -2px;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            opacity: 0;
+            animation: fadeInUp 1s ease 0.3s forwards;
+        }
+
+        .hero .subtitle {
+            font-size: 24px;
+            color: #666;
+            margin-bottom: 30px;
+            opacity: 0;
+            animation: fadeInUp 1s ease 0.4s forwards;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: #666;
+            max-width: 600px;
+            margin-bottom: 50px;
+            opacity: 0;
+            animation: fadeInUp 1s ease 0.5s forwards;
+        }
+
+        .cta-btn {
+            padding: 18px 50px;
+            background: #0a0a0a;
+            color: #fff;
+            text-decoration: none;
+            font-weight: 600;
+            border-radius: 50px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s;
+            opacity: 0;
+            animation: fadeInUp 1s ease 0.7s forwards;
+        }
+
+        .cta-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+
+        .features {
+            padding: 150px 50px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 50px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .feature-card {
+            padding: 40px;
+            border: 1px solid #e0e0e0;
+            border-radius: 20px;
+            transition: all 0.4s;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .feature-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .feature-card:hover {
+            border-color: #0a0a0a;
+            transform: translateY(-10px);
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: #0a0a0a;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 24px;
+        }
+
+        .feature-card h3 {
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+
+        .feature-card p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .facts {
+            padding: 100px 50px;
+            background: #fafafa;
+        }
+
+        .facts h2 {
+            text-align: center;
+            font-size: 48px;
+            margin-bottom: 60px;
+            font-weight: 800;
+        }
+
+        .facts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .fact-item {
+            background: #fff;
+            padding: 30px;
+            border-radius: 15px;
+            border-left: 4px solid #0a0a0a;
+            transition: all 0.3s;
+        }
+
+        .fact-item:hover {
+            transform: translateX(10px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .fact-number {
+            font-size: 36px;
+            font-weight: 900;
+            color: #0a0a0a;
+            margin-bottom: 10px;
+        }
+
+        .fact-text {
+            color: #555;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        .pricing {
+            padding: 100px 50px;
+        }
+
+        .pricing h2 {
+            text-align: center;
+            font-size: 48px;
+            margin-bottom: 80px;
+            font-weight: 800;
+        }
+
+        .price-cards {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .price-card {
+            background: #fff;
+            padding: 50px 40px;
+            border-radius: 20px;
+            width: 380px;
+            text-align: center;
+            border: 2px solid #e0e0e0;
+            transition: all 0.4s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .price-card:hover {
+            border-color: #0a0a0a;
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        .price-card.popular {
+            border-color: #0a0a0a;
+            transform: scale(1.05);
+        }
+
+        .price-card.popular:hover {
+            transform: scale(1.05) translateY(-10px);
+        }
+
+        .price-card.popular::before {
+            content: 'POPULAR';
+            position: absolute;
+            top: 20px;
+            right: -35px;
+            background: #0a0a0a;
+            color: #fff;
+            padding: 5px 40px;
+            transform: rotate(45deg);
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .client-name {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 5px;
+            color: #0a0a0a;
+        }
+
+        .client-version {
+            font-size: 14px;
+            color: #999;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .price {
+            font-size: 48px;
+            font-weight: 900;
+            margin-bottom: 10px;
+        }
+
+        .price span {
+            font-size: 16px;
+            color: #666;
+            font-weight: 400;
+        }
+
+        .price-note {
+            font-size: 14px;
+            color: #999;
+            margin-bottom: 30px;
+        }
+
+        .price-card ul {
+            list-style: none;
+            margin-bottom: 30px;
+            text-align: left;
+        }
+
+        .price-card li {
+            padding: 12px 0;
+            color: #444;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 15px;
+        }
+
+        .price-card li:last-child {
+            border-bottom: none;
+        }
+
+        .price-card li::before {
+            content: '✓';
+            color: #0a0a0a;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .price-card li.disabled {
+            color: #999;
+            text-decoration: line-through;
+        }
+
+        .price-card li.disabled::before {
+            content: '✗';
+            color: #999;
+        }
+
+        .buy-btn {
+            width: 100%;
+            padding: 16px;
+            background: transparent;
+            border: 2px solid #0a0a0a;
+            color: #0a0a0a;
+            font-weight: 700;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 16px;
+        }
+
+        .buy-btn:hover {
+            background: #0a0a0a;
+            color: #fff;
+            transform: scale(1.02);
+        }
+
+        .price-card.popular .buy-btn {
+            background: #0a0a0a;
+            color: #fff;
+        }
+
+        .price-card.popular .buy-btn:hover {
+            background: #333;
+        }
+
+        /* Раздел получения ключей - Discord */
+        .discord-section {
+            padding: 100px 50px;
+            background: #5865F2;
+            color: #fff;
+            text-align: center;
+        }
+
+        .discord-section h2 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            font-weight: 800;
+        }
+
+        .discord-section .subtitle {
+            color: rgba(255,255,255,0.9);
+            margin-bottom: 40px;
+            font-size: 20px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .discord-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 15px;
+            padding: 20px 50px;
+            background: #fff;
+            color: #5865F2;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 20px;
+            border-radius: 50px;
+            transition: all 0.3s;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .discord-btn:hover {
+            transform: scale(1.05) translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+
+        .discord-icon {
+            width: 30px;
+            height: 30px;
+        }
+
+        .discord-info {
+            margin-top: 40px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .discord-step {
+            background: rgba(255,255,255,0.1);
+            padding: 30px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+
+        .discord-step-number {
+            width: 40px;
+            height: 40px;
+            background: #fff;
+            color: #5865F2;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            margin: 0 auto 15px;
+            font-size: 18px;
+        }
+
+        .discord-step h3 {
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+
+        .discord-step p {
+            color: rgba(255,255,255,0.8);
+            font-size: 14px;
+        }
+
+        footer {
+            padding: 50px;
+            text-align: center;
+            color: #999;
+            border-top: 1px solid #f0f0f0;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal.active {
+            display: flex;
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background: #fff;
+            padding: 40px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 450px;
+            text-align: center;
+            animation: slideUp 0.3s;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal-content h3 {
+            margin-bottom: 10px;
+            font-size: 24px;
+            color: #0a0a0a;
+        }
+
+        .modal-content p {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+
+        .key-input {
+            width: 100%;
+            padding: 18px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            font-size: 20px;
+            text-align: center;
+            letter-spacing: 3px;
+            font-family: monospace;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .key-input:focus {
+            outline: none;
+            border-color: #0a0a0a;
+        }
+
+        .key-input.error {
+            border-color: #ff4444;
+            background: #fff5f5;
+        }
+
+        .key-input.success {
+            border-color: #44ff44;
+            background: #f5fff5;
+        }
+
+        .error-msg {
+            color: #ff4444;
+            font-size: 14px;
+            margin-bottom: 15px;
+            display: none;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .modal-btn {
+            flex: 1;
+            padding: 14px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            font-size: 16px;
+        }
+
+        .modal-btn.confirm {
+            background: #0a0a0a;
+            color: #fff;
+        }
+
+        .modal-btn.confirm:hover {
+            background: #333;
+            transform: scale(1.02);
+        }
+
+        .modal-btn.cancel {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        .modal-btn.cancel:hover {
+            background: #e0e0e0;
+        }
+
+        @media (max-width: 768px) {
+            nav { padding: 20px; }
+            .nav-links { display: none; }
+            .hero h1 { font-size: 28px; }
+            .hero .subtitle { font-size: 16px; }
+            .features { padding: 80px 20px; }
+            .facts { padding: 80px 20px; }
+            .pricing { padding: 80px 20px; }
+            .discord-section { padding: 80px 20px; }
+            .price-card { width: 100%; max-width: 350px; }
+            .price-card.popular { transform: none; }
+            .discord-section h2 { font-size: 32px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">M<span>CLIENT</span></div>
+        <ul class="nav-links">
+            <li><a href="#features">Возможности</a></li>
+            <li><a href="#facts">Факты</a></li>
+            <li><a href="#pricing">Клиенты</a></li>
+            <li><a href="#discord">Получить ключ</a></li>
+        </ul>
+    </nav>
+
+    <section class="hero">
+        <h1>MClient<br>Nursultan Delta Wexside</h1>
+        <div class="subtitle">Три уникальных клиента для Minecraft 1.16.5</div>
+        <p>Максимальная производительность, zero банов, премиум опыт. Получи ключ только в Discord.</p>
+        <button class="cta-btn" onclick="location.href='https://discord.gg/k7kswqKS'">Перейти в Discord</button>
+    </section>
+
+    <section class="features" id="features">
+        <div class="feature-card">
+            <div class="feature-icon">⚡</div>
+            <h3>400+ FPS</h3>
+            <p>Уникальная оптимизация движка. Даже на Intel HD Graphics стабильные 60 FPS.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">🎯</div>
+            <h3>Zero Bans</h3>
+            <p>3 года работы клиента — 0 банов на Hypixel, Hive, Cubecraft и других топ-серверах.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">🔧</div>
+            <h3>Авто-настройка</h3>
+            <p>Клиент автоматически подбирает оптимальные настройки под твоё железо за 30 секунд.</p>
+        </div>
+    </section>
+
+    <section class="facts" id="facts">
+        <h2>Факты о нашем клиенте</h2>
+        <div class="facts-grid">
+            <div class="fact-item">
+                <div class="fact-number">50K+</div>
+                <div class="fact-text">Активных пользователей по всему миру. Россия, Казахстан, Украина, Беларусь.</div>
+            </div>
+            <div class="fact-item">
+                <div class="fact-number">3 года</div>
+                <div class="fact-text">Безупречной работы. Первый релиз был в 2022 году, с тех пор 0 банов.</div>
+            </div>
+            <div class="fact-item">
+                <div class="fact-number">120+</div>
+                <div class="fact-text">Уникальных модификаций, созданных специально для MClient.</div>
+            </div>
+            <div class="fact-item">
+                <div class="fact-number">24/7</div>
+                <div class="fact-text">Техническая поддержка в Discord. Ответ за 15 минут в любое время суток.</div>
+            </div>
+            <div class="fact-item">
+                <div class="fact-number">0.5ms</div>
+                <div class="fact-text">Средний пинг-редукер. Компенсирует задержку сети на уровне клиента.</div>
+            </div>
+            <div class="fact-item">
+                <div class="fact-number">99.9%</div>
+                <div class="fact-text">Аптайм серверов обновлений. Клиент всегда доступен для скачивания.</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="pricing" id="pricing">
+        <h2>Выбери свой клиент</h2>
+        <div class="price-cards">
+            
+            <!-- Nursultan_Lite_1.16.5 -->
+            <div class="price-card">
+                <div class="client-name">Nursultan Lite</div>
+                <div class="client-version">Версия 1.16.5</div>
+                <div class="price">Бесплатно</div>
+                <div class="price-note">навсегда</div>
+                <ul>
+                    <li>Базовая оптимизация FPS</li>
+                    <li>15 стандартных модов</li>
+                    <li>Только версия 1.16.5</li>
+                    <li>Базовая защита от банов</li>
+                    <li class="disabled">Delta HUD отсутствует</li>
+                    <li class="disabled">Без авто-обновлений</li>
+                    <li class="disabled">Без техподдержки</li>
+                </ul>
+                <button class="buy-btn" onclick="openKeyModal('lite')">Скачать</button>
+            </div>
+
+            <!-- Delta Client -->
+            <div class="price-card popular">
+                <div class="client-name">Delta Client</div>
+                <div class="client-version">Версия 1.16.5</div>
+                <div class="price">499₽<span>/навсегда</span></div>
+                <div class="price-note">популярный выбор</div>
+                <ul>
+                    <li>Максимальная оптимизация 400+ FPS</li>
+                    <li>45+ модов включая Delta HUD</li>
+                    <li>Поддержка 1.8 - 1.20.4</li>
+                    <li>Продвинутая защита от банов</li>
+                    <li>Авто-обновления клиента</li>
+                    <li>Приоритетная техподдержка</li>
+                    <li>Доступ к бета-тестам</li>
+                </ul>
+                <button class="buy-btn" onclick="openKeyModal('delta')">Купить</button>
+            </div>
+
+            <!-- Wexside -->
+            <div class="price-card">
+                <div class="client-name">Wexside</div>
+                <div class="client-version">Версия 1.16.5</div>
+                <div class="price">899₽<span>/навсегда</span></div>
+                <div class="price-note">максимум возможностей</div>
+                <ul>
+                    <li>Всё из Delta Client</li>
+                    <li>120+ эксклюзивных модов</li>
+                    <li>Приватный сервер Wexside</li>
+                    <li>Персональная настройка под ПК</li>
+                    <li>Ранний доступ к новым фичам</li>
+                    <li>VIP канал в Discord</li>
+                    <li>Личный менеджер поддержки</li>
+                </ul>
+                <button class="buy-btn" onclick="openKeyModal('wexside')">Купить</button>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Discord секция -->
+    <section class="discord-section" id="discord">
+        <h2>🔑 Получить ключ</h2>
+        <p class="subtitle">Ключи выдаются только в Discord сервере. Присоединяйся, напиши в нужный канал и получи свой ключ!</p>
+        
+        <a href="https://discord.gg/k7kswqKS" class="discord-btn" target="_blank">
+            <svg class="discord-icon" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/>
+            </svg>
+            Присоединиться к Discord
+        </a>
+
+        <div class="discord-info">
+            <div class="discord-step">
+                <div class="discord-step-number">1</div>
+                <h3>Присоединись</h3>
+                <p>Нажми на кнопку выше и зайди на наш Discord сервер</p>
+            </div>
+            <div class="discord-step">
+                <div class="discord-step-number">2</div>
+                <h3>Напиши</h3>
+                <p>В канал #🎫-получить-ключ напиши какой клиент хочешь</p>
+            </div>
+            <div class="discord-step">
+                <div class="discord-step-number">3</div>
+                <h3>Получи ключ</h3>
+                <p>Админ выдаст тебе уникальный ключ для скачивания</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2025 MClient. Nursultan | Delta | Wexside. Все права защищены.</p>
+        <p style="margin-top: 10px; font-size: 12px;">Не связано с Mojang Studios или Microsoft. 1.16.5 Edition.</p>
+    </footer>
+
+    <!-- Модальное окно ввода ключа -->
+    <div class="modal" id="keyModal">
+        <div class="modal-content">
+            <h3>🔐 Введите ключ активации</h3>
+            <p>Без ключа скачивание невозможно. Получите ключ в Discord: <a href="https://discord.gg/k7kswqKS" target="_blank">discord.gg/k7kswqKS</a></p>
+            <input type="text" class="key-input" id="keyInput" placeholder="XXXX-XXXX-XXXX" maxlength="14">
+            <div class="error-msg" id="errorMsg">❌ Неверный ключ! Проверьте правильность ввода.</div>
+            <div class="modal-buttons">
+                <button class="modal-btn cancel" onclick="closeKeyModal()">Отмена</button>
+                <button class="modal-btn confirm" onclick="verifyKey()">Проверить и скачать</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Только ты знаешь эти ключи (хранятся на сервере в реальности)
+        const VALID_KEYS = {
+            'lite': ['NURS-LITE-01', 'NURS-LITE-02', 'NURS-LITE-03', 'NURS-LITE-04'],
+            'delta': ['DLTA-PRO-001', 'DLTA-PRO-002', 'DLTA-PRO-003'],
+            'wexside': ['WEXS-ELITE-1', 'WEXS-ELITE-2', 'WEXS-ELITE-3']
+        };
+
+        let currentClient = '';
+
+        // Открыть модальное окно
+        function openKeyModal(clientType) {
+            currentClient = clientType;
+            document.getElementById('keyModal').classList.add('active');
+            document.getElementById('keyInput').value = '';
+            document.getElementById('keyInput').className = 'key-input';
+            document.getElementById('errorMsg').style.display = 'none';
+            document.getElementById('keyInput').focus();
+        }
+
+        // Закрыть модальное окно
+        function closeKeyModal() {
+            document.getElementById('keyModal').classList.remove('active');
+        }
+
+        // Проверка ключа
+        function verifyKey() {
+            const input = document.getElementById('keyInput').value.trim().toUpperCase();
+            const inputElement = document.getElementById('keyInput');
+            const errorMsg = document.getElementById('errorMsg');
+
+            const validForType = VALID_KEYS[currentClient] || [];
+            const allKeys = [...VALID_KEYS.lite, ...VALID_KEYS.delta, ...VALID_KEYS.wexside];
+            
+            if (validForType.includes(input)) {
+                inputElement.className = 'key-input success';
+                errorMsg.style.display = 'none';
+                
+                setTimeout(() => {
+                    downloadClient(currentClient);
+                }, 500);
+            } else if (allKeys.includes(input)) {
+                inputElement.className = 'key-input error';
+                errorMsg.textContent = '❌ Этот ключ для другого клиента!';
+                errorMsg.style.display = 'block';
+            } else {
+                inputElement.className = 'key-input error';
+                errorMsg.textContent = '❌ Неверный ключ! Получите ключ в Discord.';
+                errorMsg.style.display = 'block';
+            }
+        }
+
+        // Скачивание
+        function downloadClient(type) {
+            const fileNames = {
+                'lite': 'Nursultan_Lite_1.16.5.exe',
+                'delta': 'Delta_Client_1.16.5.exe',
+                'wexside': 'Wexside_1.16.5.exe'
+            };
+
+            const link = document.createElement('a');
+            link.href = fileNames[type];
+            link.download = fileNames[type];
+            
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            closeKeyModal();
+            
+            setTimeout(() => {
+                alert('✅ Загрузка началась!\n\nЗапустите установщик и введите ваш ключ.');
+            }, 300);
+        }
+
+        // Форматирование ввода
+        document.getElementById('keyInput').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/-/g, '').toUpperCase();
+            let formatted = '';
+            for (let i = 0; i < value.length && i < 12; i++) {
+                if (i > 0 && i % 4 === 0) formatted += '-';
+                formatted += value[i];
+            }
+            e.target.value = formatted;
+        });
+
+        document.getElementById('keyInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') verifyKey();
+        });
+
+        document.getElementById('keyModal').addEventListener('click', function(e) {
+            if (e.target === this) closeKeyModal();
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeKeyModal();
+        });
+
+        // Анимации
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: "0px 0px -50px 0px"
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.feature-card, .fact-item').forEach((el, index) => {
+            el.style.transitionDelay = `${index * 0.1}s`;
+            observer.observe(el);
+        });
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+
+</body>
+</html><!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MClient | Nursultan Delta Wexside</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: #ffffff;
+            color: #0a0a0a;
+            overflow-x: hidden;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 25px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            border-bottom: 1px solid #f0f0f0;
+            animation: slideDown 0.8s ease;
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 900;
+            letter-spacing: -2px;
+        }
+
+        .logo span {
+            color: #666;
+            font-weight: 400;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #0a0a0a;
+            font-weight: 500;
+            position: relative;
+            transition: color 0.3s;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #0a0a0a;
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 20px;
+        }
+
+        .hero h1 {
+            font-size: clamp(36px, 8vw, 80px);
+            font-weight: 900;
+            letter-spacing: -2px;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            opacity: 0;
+            animation: fadeInUp 1s ease 0.3s forwards;
+        }
+
+        .hero .subtitle {
+            font-size: 24px;
+            color: #666;
+            margin-bottom: 30px;
+            opacity: 0;
+            animation: fadeInUp 1s ease 0.4s forwards;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: #666;
+            max-width: 600px;
+            margin-bottom: 50px;
+            opacity: 0;
+            animation: fadeInUp 1s ease 0.5s forwards;
+        }
+
+        .cta-btn {
+            padding: 18px 50px;
+            background: #0a0a0a;
+            color: #fff;
+            text-decoration: none;
+            font-weight: 600;
+            border-radius: 50px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s;
+            opacity: 0;
+            animation: fadeInUp 1s ease 0.7s forwards;
+        }
+
+        .cta-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+
+        .features {
+            padding: 150px 50px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 50px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .feature-card {
+            padding: 40px;
+            border: 1px solid #e0e0e0;
+            border-radius: 20px;
+            transition: all 0.4s;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .feature-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .feature-card:hover {
+            border-color: #0a0a0a;
+            transform: translateY(-10px);
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: #0a0a0a;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 24px;
+        }
+
+        .feature-card h3 {
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+
+        .feature-card p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .facts {
+            padding: 100px 50px;
+            background: #fafafa;
+        }
+
+        .facts h2 {
+            text-align: center;
+            font-size: 48px;
+            margin-bottom: 60px;
+            font-weight: 800;
+        }
+
+        .facts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .fact-item {
+            background: #fff;
+            padding: 30px;
+            border-radius: 15px;
+            border-left: 4px solid #0a0a0a;
+            transition: all 0.3s;
+        }
+
+        .fact-item:hover {
+            transform: translateX(10px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .fact-number {
+            font-size: 36px;
+            font-weight: 900;
+            color: #0a0a0a;
+            margin-bottom: 10px;
+        }
+
+        .fact-text {
+            color: #555;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        .pricing {
+            padding: 100px 50px;
+        }
+
+        .pricing h2 {
+            text-align: center;
+            font-size: 48px;
+            margin-bottom: 80px;
+            font-weight: 800;
+        }
+
+        .price-cards {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .price-card {
+            background: #fff;
+            padding: 50px 40px;
+            border-radius: 20px;
+            width: 380px;
+            text-align: center;
+            border: 2px solid #e0e0e0;
+            transition: all 0.4s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .price-card:hover {
+            border-color: #0a0a0a;
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        .price-card.popular {
+            border-color: #0a0a0a;
+            transform: scale(1.05);
+        }
+
+        .price-card.popular:hover {
+            transform: scale(1.05) translateY(-10px);
+        }
+
+        .price-card.popular::before {
+            content: 'POPULAR';
+            position: absolute;
+            top: 20px;
+            right: -35px;
+            background: #0a0a0a;
+            color: #fff;
+            padding: 5px 40px;
+            transform: rotate(45deg);
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .client-name {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 5px;
+            color: #0a0a0a;
+        }
+
+        .client-version {
+            font-size: 14px;
+            color: #999;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .price {
+            font-size: 48px;
+            font-weight: 900;
+            margin-bottom: 10px;
+        }
+
+        .price span {
+            font-size: 16px;
+            color: #666;
+            font-weight: 400;
+        }
+
+        .price-note {
+            font-size: 14px;
+            color: #999;
+            margin-bottom: 30px;
+        }
+
+        .price-card ul {
+            list-style: none;
+            margin-bottom: 30px;
+            text-align: left;
+        }
+
+        .price-card li {
+            padding: 12px 0;
+            color: #444;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 15px;
+        }
+
+        .price-card li:last-child {
+            border-bottom: none;
+        }
+
+        .price-card li::before {
+            content: '✓';
+            color: #0a0a0a;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .price-card li.disabled {
+            color: #999;
+            text-decoration: line-through;
+        }
+
+        .price-card li.disabled::before {
+            content: '✗';
+            color: #999;
+        }
+
+        .buy-btn {
+            width: 100%;
+            padding: 16px;
+            background: transparent;
+            border: 2px solid #0a0a0a;
+            color: #0a0a0a;
+            font-weight: 700;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 16px;
+        }
+
+        .buy-btn:hover {
+            background: #0a0a0a;
+            color: #fff;
+            transform: scale(1.02);
+        }
+
+        .price-card.popular .buy-btn {
+            background: #0a0a0a;
+            color: #fff;
+        }
+
+        .price-card.popular .buy-btn:hover {
+            background: #333;
+        }
+
+        /* Раздел получения ключей - Discord */
+        .discord-section {
+            padding: 100px 50px;
+            background: #5865F2;
+            color: #fff;
+            text-align: center;
+        }
+
+        .discord-section h2 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            font-weight: 800;
+        }
+
+        .discord-section .subtitle {
+            color: rgba(255,255,255,0.9);
+            margin-bottom: 40px;
+            font-size: 20px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .discord-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 15px;
+            padding: 20px 50px;
+            background: #fff;
+            color: #5865F2;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 20px;
+            border-radius: 50px;
+            transition: all 0.3s;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .discord-btn:hover {
+            transform: scale(1.05) translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+
+        .discord-icon {
+            width: 30px;
+            height: 30px;
+        }
+
+        .discord-info {
+            margin-top: 40px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .discord-step {
+            background: rgba(255,255,255,0.1);
+            padding: 30px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+
+        .discord-step-number {
+            width: 40px;
+            height: 40px;
+            background: #fff;
+            color: #5865F2;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            margin: 0 auto 15px;
+            font-size: 18px;
+        }
+
+        .discord-step h3 {
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+
+        .discord-step p {
+            color: rgba(255,255,255,0.8);
+            font-size: 14px;
+        }
+
+        footer {
+            padding: 50px;
+            text-align: center;
+            color: #999;
+            border-top: 1px solid #f0f0f0;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal.active {
+            display: flex;
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background: #fff;
+            padding: 40px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 450px;
+            text-align: center;
+            animation: slideUp 0.3s;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal-content h3 {
+            margin-bottom: 10px;
+            font-size: 24px;
+            color: #0a0a0a;
+        }
+
+        .modal-content p {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+
+        .key-input {
+            width: 100%;
+            padding: 18px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            font-size: 20px;
+            text-align: center;
+            letter-spacing: 3px;
+            font-family: monospace;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .key-input:focus {
+            outline: none;
+            border-color: #0a0a0a;
+        }
+
+        .key-input.error {
+            border-color: #ff4444;
+            background: #fff5f5;
+        }
+
+        .key-input.success {
+            border-color: #44ff44;
+            background: #f5fff5;
+        }
+
+        .error-msg {
+            color: #ff4444;
+            font-size: 14px;
+            margin-bottom: 15px;
+            display: none;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .modal-btn {
+            flex: 1;
+            padding: 14px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            font-size: 16px;
+        }
+
+        .modal-btn.confirm {
+            background: #0a0a0a;
+            color: #fff;
+        }
+
+        .modal-btn.confirm:hover {
+            background: #333;
+            transform: scale(1.02);
+        }
+
+        .modal-btn.cancel {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        .modal-btn.cancel:hover {
+            background: #e0e0e0;
+        }
+
+        @media (max-width: 768px) {
+            nav { padding: 20px; }
+            .nav-links { display: none; }
+            .hero h1 { font-size: 28px; }
+            .hero .subtitle { font-size: 16px; }
+            .features { padding: 80px 20px; }
+            .facts { padding: 80px 20px; }
+            .pricing { padding: 80px 20px; }
+            .discord-section { padding: 80px 20px; }
+            .price-card { width: 100%; max-width: 350px; }
+            .price-card.popular { transform: none; }
+            .discord-section h2 { font-size: 32px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">M<span>CLIENT</span></div>
+        <ul class="nav-links">
+            <li><a href="#features">Возможности</a></li>
+            <li><a href="#facts">Факты</a></li>
+            <li><a href="#pricing">Клиенты</a></li>
+            <li><a href="#discord">Получить ключ</a></li>
+        </ul>
+    </nav>
+
+    <section class="hero">
+        <h1>MClient<br>Nursultan Delta Wexside</h1>
+        <div class="subtitle">Три уникальных клиента для Minecraft 1.16.5</div>
+        <p>Максимальная производительность, zero банов, премиум опыт. Получи ключ только в Discord.</p>
+        <button class="cta-btn" onclick="location.href='https://discord.gg/k7kswqKS'">Перейти в Discord</button>
+    </section>
+
+    <section class="features" id="features">
+        <div class="feature-card">
+            <div class="feature-icon">⚡</div>
+            <h3>400+ FPS</h3>
+            <p>Уникальная оптимизация движка. Даже на Intel HD Graphics стабильные 60 FPS.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">🎯</div>
+            <h3>Zero Bans</h3>
+            <p>3 года работы клиента — 0 банов на Hypixel, Hive, Cubecraft и других топ-серверах.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">🔧</div>
+            <h3>Авто-настройка</h3>
+            <p>Клиент автоматически подбирает оптимальные настройки под твоё железо за 30 секунд.</p>
+        </div>
+    </section>
+
+    <section class="facts" id="facts">
+        <h2>Факты о нашем клиенте</h2>
+        <div class="facts-grid">
+            <div class="fact-item">
+                <div class="fact-number">50K+</div>
+                <div class="fact-text">Активных пользователей по всему миру. Россия, Казахстан, Украина, Беларусь.</div>
+            </div>
+            <div class="fact-item">
+                <div class="fact-number">3 года</div>
+                <div class="fact-text">Безупречной работы. Первый релиз был в 2022 году, с тех пор 0 банов.</div>
+            </div>
+            <div class="fact-item">
+                <div class="fact-number">120+</div>
+                <div class="fact-text">Уникальных модификаций, созданных специально для MClient.</div>
+            </div>
+            <div class="fact-item">
+                <div class="fact-number">24/7</div>
+                <div class="fact-text">Техническая поддержка в Discord. Ответ за 15 минут в любое время суток.</div>
+            </div>
+            <div class="fact-item">
+                <div class="fact-number">0.5ms</div>
+                <div class="fact-text">Средний пинг-редукер. Компенсирует задержку сети на уровне клиента.</div>
+            </div>
+            <div class="fact-item">
+                <div class="fact-number">99.9%</div>
+                <div class="fact-text">Аптайм серверов обновлений. Клиент всегда доступен для скачивания.</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="pricing" id="pricing">
+        <h2>Выбери свой клиент</h2>
+        <div class="price-cards">
+            
+            <!-- Nursultan_Lite_1.16.5 -->
+            <div class="price-card">
+                <div class="client-name">Nursultan Lite</div>
+                <div class="client-version">Версия 1.16.5</div>
+                <div class="price">Бесплатно</div>
+                <div class="price-note">навсегда</div>
+                <ul>
+                    <li>Базовая оптимизация FPS</li>
+                    <li>15 стандартных модов</li>
+                    <li>Только версия 1.16.5</li>
+                    <li>Базовая защита от банов</li>
+                    <li class="disabled">Delta HUD отсутствует</li>
+                    <li class="disabled">Без авто-обновлений</li>
+                    <li class="disabled">Без техподдержки</li>
+                </ul>
+                <button class="buy-btn" onclick="openKeyModal('lite')">Скачать</button>
+            </div>
+
+            <!-- Delta Client -->
+            <div class="price-card popular">
+                <div class="client-name">Delta Client</div>
+                <div class="client-version">Версия 1.16.5</div>
+                <div class="price">499₽<span>/навсегда</span></div>
+                <div class="price-note">популярный выбор</div>
+                <ul>
+                    <li>Максимальная оптимизация 400+ FPS</li>
+                    <li>45+ модов включая Delta HUD</li>
+                    <li>Поддержка 1.8 - 1.20.4</li>
+                    <li>Продвинутая защита от банов</li>
+                    <li>Авто-обновления клиента</li>
+                    <li>Приоритетная техподдержка</li>
+                    <li>Доступ к бета-тестам</li>
+                </ul>
+                <button class="buy-btn" onclick="openKeyModal('delta')">Купить</button>
+            </div>
+
+            <!-- Wexside -->
+            <div class="price-card">
+                <div class="client-name">Wexside</div>
+                <div class="client-version">Версия 1.16.5</div>
+                <div class="price">899₽<span>/навсегда</span></div>
+                <div class="price-note">максимум возможностей</div>
+                <ul>
+                    <li>Всё из Delta Client</li>
+                    <li>120+ эксклюзивных модов</li>
+                    <li>Приватный сервер Wexside</li>
+                    <li>Персональная настройка под ПК</li>
+                    <li>Ранний доступ к новым фичам</li>
+                    <li>VIP канал в Discord</li>
+                    <li>Личный менеджер поддержки</li>
+                </ul>
+                <button class="buy-btn" onclick="openKeyModal('wexside')">Купить</button>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Discord секция -->
+    <section class="discord-section" id="discord">
+        <h2>🔑 Получить ключ</h2>
+        <p class="subtitle">Ключи выдаются только в Discord сервере. Присоединяйся, напиши в нужный канал и получи свой ключ!</p>
+        
+        <a href="https://discord.gg/k7kswqKS" class="discord-btn" target="_blank">
+            <svg class="discord-icon" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/>
+            </svg>
+            Присоединиться к Discord
+        </a>
+
+        <div class="discord-info">
+            <div class="discord-step">
+                <div class="discord-step-number">1</div>
+                <h3>Присоединись</h3>
+                <p>Нажми на кнопку выше и зайди на наш Discord сервер</p>
+            </div>
+            <div class="discord-step">
+                <div class="discord-step-number">2</div>
+                <h3>Напиши</h3>
+                <p>В канал #🎫-получить-ключ напиши какой клиент хочешь</p>
+            </div>
+            <div class="discord-step">
+                <div class="discord-step-number">3</div>
+                <h3>Получи ключ</h3>
+                <p>Админ выдаст тебе уникальный ключ для скачивания</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2025 MClient. Nursultan | Delta | Wexside. Все права защищены.</p>
+        <p style="margin-top: 10px; font-size: 12px;">Не связано с Mojang Studios или Microsoft. 1.16.5 Edition.</p>
+    </footer>
+
+    <!-- Модальное окно ввода ключа -->
+    <div class="modal" id="keyModal">
+        <div class="modal-content">
+            <h3>🔐 Введите ключ активации</h3>
+            <p>Без ключа скачивание невозможно. Получите ключ в Discord: <a href="https://discord.gg/k7kswqKS" target="_blank">discord.gg/k7kswqKS</a></p>
+            <input type="text" class="key-input" id="keyInput" placeholder="XXXX-XXXX-XXXX" maxlength="14">
+            <div class="error-msg" id="errorMsg">❌ Неверный ключ! Проверьте правильность ввода.</div>
+            <div class="modal-buttons">
+                <button class="modal-btn cancel" onclick="closeKeyModal()">Отмена</button>
+                <button class="modal-btn confirm" onclick="verifyKey()">Проверить и скачать</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Только ты знаешь эти ключи (хранятся на сервере в реальности)
+        const VALID_KEYS = {
+            'lite': ['NURS-LITE-01', 'NURS-LITE-02', 'NURS-LITE-03', 'NURS-LITE-04'],
+            'delta': ['DLTA-PRO-001', 'DLTA-PRO-002', 'DLTA-PRO-003'],
+            'wexside': ['WEXS-ELITE-1', 'WEXS-ELITE-2', 'WEXS-ELITE-3']
+        };
+
+        let currentClient = '';
+
+        // Открыть модальное окно
+        function openKeyModal(clientType) {
+            currentClient = clientType;
+            document.getElementById('keyModal').classList.add('active');
+            document.getElementById('keyInput').value = '';
+            document.getElementById('keyInput').className = 'key-input';
+            document.getElementById('errorMsg').style.display = 'none';
+            document.getElementById('keyInput').focus();
+        }
+
+        // Закрыть модальное окно
+        function closeKeyModal() {
+            document.getElementById('keyModal').classList.remove('active');
+        }
+
+        // Проверка ключа
+        function verifyKey() {
+            const input = document.getElementById('keyInput').value.trim().toUpperCase();
+            const inputElement = document.getElementById('keyInput');
+            const errorMsg = document.getElementById('errorMsg');
+
+            const validForType = VALID_KEYS[currentClient] || [];
+            const allKeys = [...VALID_KEYS.lite, ...VALID_KEYS.delta, ...VALID_KEYS.wexside];
+            
+            if (validForType.includes(input)) {
+                inputElement.className = 'key-input success';
+                errorMsg.style.display = 'none';
+                
+                setTimeout(() => {
+                    downloadClient(currentClient);
+                }, 500);
+            } else if (allKeys.includes(input)) {
+                inputElement.className = 'key-input error';
+                errorMsg.textContent = '❌ Этот ключ для другого клиента!';
+                errorMsg.style.display = 'block';
+            } else {
+                inputElement.className = 'key-input error';
+                errorMsg.textContent = '❌ Неверный ключ! Получите ключ в Discord.';
+                errorMsg.style.display = 'block';
+            }
+        }
+
+        // Скачивание
+        function downloadClient(type) {
+            const fileNames = {
+                'lite': 'Nursultan_Lite_1.16.5.exe',
+                'delta': 'Delta_Client_1.16.5.exe',
+                'wexside': 'Wexside_1.16.5.exe'
+            };
+
+            const link = document.createElement('a');
+            link.href = fileNames[type];
+            link.download = fileNames[type];
+            
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            closeKeyModal();
+            
+            setTimeout(() => {
+                alert('✅ Загрузка началась!\n\nЗапустите установщик и введите ваш ключ.');
+            }, 300);
+        }
+
+        // Форматирование ввода
+        document.getElementById('keyInput').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/-/g, '').toUpperCase();
+            let formatted = '';
+            for (let i = 0; i < value.length && i < 12; i++) {
+                if (i > 0 && i % 4 === 0) formatted += '-';
+                formatted += value[i];
+            }
+            e.target.value = formatted;
+        });
+
+        document.getElementById('keyInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') verifyKey();
+        });
+
+        document.getElementById('keyModal').addEventListener('click', function(e) {
+            if (e.target === this) closeKeyModal();
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeKeyModal();
+        });
+
+        // Анимации
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: "0px 0px -50px 0px"
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.feature-card, .fact-item').forEach((el, index) => {
+            el.style.transitionDelay = `${index * 0.1}s`;
+            observer.observe(el);
+        });
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
